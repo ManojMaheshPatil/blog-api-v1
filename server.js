@@ -5,10 +5,23 @@ const categoryRouter = require("./routes/categories/categoryRoutes");
 const commentRouter = require("./routes/comments/commentRoutes");
 const globalErrHandler = require("./middlewares/globalErrHandler");
 const isAdmin = require("./middlewares/isAdmin");
+const Post = require("./model/Post/Post");
 require("dotenv").config();
 require('./config/dbConnect');
 const app = express();
 
+// Home Page
+app.get("/" , async(req,res) => {
+    try{
+        const posts = await Post.find();
+        res.json({
+            status: "success",
+            data : posts
+        })
+    }catch(error){
+        res.json(error);
+    }
+})
 
 //middlewares
 app.use(express.json()); // parse incoming payload
